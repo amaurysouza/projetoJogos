@@ -5,7 +5,7 @@ import pygame
 pygame.init()
 
 #Tela do jogo
-screen = pygame.display.set_mode((1500, 1500))
+screen = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("Snack Time")
 
 #Upload das imagens/Fundo/Personagem
@@ -13,17 +13,16 @@ andarDir = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.ima
 andarEsq = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
 char = pygame.image.load('standing.png')
 
-#inimigo
+#inimigo"
 andarDir1 = [pygame.image.load('R1E.png'), pygame.image.load('R2E.png'), pygame.image.load('R3E.png'), pygame.image.load('R4E.png'), pygame.image.load('R5E.png'), pygame.image.load('R6E.png'), pygame.image.load('R7E.png'), pygame.image.load('R8E.png'), pygame.image.load('R9E.png')]
 andarEsq1 = [pygame.image.load('L1E.png'), pygame.image.load('L2E.png'), pygame.image.load('L3E.png'), pygame.image.load('L4E.png'), pygame.image.load('L5E.png'), pygame.image.load('L6E.png'), pygame.image.load('L7E.png'), pygame.image.load('L8E.png'), pygame.image.load('L9E.png')]
 
 char1 = pygame.image.load('R11E.png')
 
 clock = pygame.time.Clock()
-bg = pygame.image.load('bg1.jpg')
+bg = pygame.image.load('bg.jpg')
 
-
-#Personagem/Dimensoes/CaracteristicasFisicas
+#Personagem/Dimensoes/CaracteristicasFisicas"
 class personagem(object):
     def __init__(self, x, y, width, height):
         self.x = x
@@ -36,6 +35,7 @@ class personagem(object):
         self.esq = False
         self.dire = False
         self.andarCont = 0
+        self.hitbox = (self.x + 17, self.y + 11, 29, 52)
 
 #Movimentacao visual do personagem
     def draw(self,screen):
@@ -52,66 +52,58 @@ class personagem(object):
 
         else:
             screen.blit(char, (self.x, self.y))
+            
+        self.hitbox = (self.x + 17, self.y, 31, 57)
+        pygame.draw.rect(screen, (255,0,0), self.hitbox, 2)
 
+
+#Hit
+    def hit(self):
+        print('hit')
+                                 
 #Inimigo/Dimensoes/CaracteristicasFisicas
 class inimigo(object):
-    def __init__(self, x1, y1, width1, height1, end):
-        self.x1 = x1
-        self.y1 = y1
-        self.width1 = width1
-        self.height1 = height1
-        self.end = end
-        self.path = [self.x1 , self.end]
-        self.vel1 = 5
-        #self.esq1 = False
-        #self.dire1 = False
-        self.andarCont1 = 0
-        #self.standing  = True
+   def __init__(self, x, y, width, height, end):
+       self.x = x
+       self.y = y
+       self.width = width
+       self.height = height
+       self.end = end
+       self.path = [self.x , self.end]
+       self.andarCont = 0
+       self.vel = 6
+       self.hitbox = (self.x + 17, self.y +2, 31, 57)
+
+   def draw(self,screen):
+       self.move()
+       if self.andarCont + 1 <= 33:
+           self.andarCont = 0
+
+       if self.vel > 0:
+           screen.blit(andarDir1[self.andarCont //3], (self.x, self.y))
+           self.andarCont += 1
+
+       else:
+           screen.blit(andarEsq1[self.andarCont //3], (self.x, self.y))
+           self.andarCont += 1          
+
+       self.hitbox = (self.x + 17, self.y, 29, 52)
+       pygame.draw.rect(screen, (255,0,0), self.hitbox, 2)
+
+   def move(self):
+       if self.vel > 0:
+           if self.x + self.vel < self.path[1]:
+               self.x += self.vel
+           else:
+               self.vel = self.vel * -1
+               self.andCont = 0
+       else:
+           if self.x - self.vel > self.path[0]:
+               self.x += self.vel
+           else:
+               self.vel = self.vel * -1
+               self.andarConta = 0
         
-        
-#Movitacao visual do inimigo
-    def draw(self, screen):
-        self.move()
-        if self.andarCont1 + 1 <= 33:
-            self.andarCont1 = 0
-
-        if self.vel1 > 0:
-            screen.blit(andarDir1[self.andarCont1//3], (self.x1 , self.y1))
-            self.andarCont1 += 1
-
-        else:
-            screen.blit(andarEsq1[self.andarCont1//3], (self.x1 , self.y1))
-            self.andarCont1 += 1
-
-         #if self.andarCont1 + 1 >= 27:
-          #   self.andarCont1 = 0
-             
-             
-         #if not(self.standing):
-          #   if self.esq1:
-           #      screen.blit(andarEsq1[self.andarCont1//3], (self.x1, self.y1))
-            #     self.andarCont1 += 1
-
-             #elif self.dire1:
-              #   screen.blit(andarDir1[self.andarCont1//3], (self.x1 , self.y1))
-               #  self.andarCont1 += 1
-
-         #else:
-          #   screen.blit(char1, (self.x1, self.y1))
-    def move(self):
-        if self.vel1 > 0:
-            if self.x1 + self.vel1 < self.path[1]:
-                self.x1 ++ self.vel1
-            else:
-                self.vel1 = self.vel1 * -1
-                self.andarCont1 = 0
-        else:
-            if self.x1 - self.vel1 > self.path[0]:
-                self.x1 += self.vel1
-            else:
-                self.vel1 = self.vel1 * -1
-                self.andarCont1 = 0
-                
                  
 #Tiros
 class municao(object):
@@ -121,7 +113,7 @@ class municao(object):
         self.radius = radius
         self.color = color
         self.facing = facing
-        self.vel = 8 * facing
+        self.vel = 20 * facing
 
     def draw(self,screen):
         pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius)
@@ -133,7 +125,7 @@ class municao(object):
 def redrawGameWindow():
     screen.blit(bg, (0, 0))
     ch.draw(screen)
-    ch1.draw(screen)
+    npc.draw(screen)
     for tiro in tiros:
         tiro.draw(screen)
     pygame.display.update()
@@ -142,8 +134,9 @@ def redrawGameWindow():
 
 
 #Instancia/Personagem/Imigos/Tiros/DirecaoDoTiro
-ch = personagem(200, 400, 64, 64)
-ch1 = inimigo(3, 3, 64, 64, 450)
+ch = personagem(3, 400, 64, 64)
+npc = inimigo(3, 3, 64, 64, 450)
+tiroLoop = 0
 tiros = []
 facing = 1
 
@@ -152,12 +145,23 @@ jogando  = True
 while jogando:
     clock.tick(27)
 
+    if tiroLoop > 0:
+        tiroLoop += 1
+    if tiroLoop > 3:
+        tiroLoop = 0
+
 #Fechando a tela do jogo
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             jogando = False
 
     for tiro in tiros:
+        if tiro.y + tiro.radius < ch.hitbox[1] + ch.hitbox[3] and tiro.y + tiro.radius > ch.hitbox[1]:
+            if tiro.x + tiro.radius > ch.hitbox[0] and tiro.x - tiro.radius < ch.hitbox[0] + ch.hitbox[2]:
+                ch.hit()
+                tiros.pop(tiros.index(tiro))
+            
+        
         if tiro.y < 500 and tiro.y > 0:
             tiro.y += tiro.vel
         else:
@@ -166,15 +170,11 @@ while jogando:
 #Movimentando o Personagem
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_SPACE]:
-        #if ch1.esq1:
-         #   facing = -1
-        #else:
-         #   facing = 1
-        
+    if jogando and tiroLoop == 0:
         if len(tiros) < 5:
-            tiros.append(municao(round(ch1.x1 + ch1.width1 // 2), round(ch1.y1 + ch1.height1//2), 6,(255,0,0) , facing ))
-            
+            tiros.append(municao(round(npc.x + npc.width //2), round(npc.y + npc.height//2), 4, (255,0,0), facing))
+
+        tiroLoop = 1
     
     if keys[pygame.K_LEFT] and ch.x > ch.vel:
         ch.x -= ch.vel
@@ -209,24 +209,8 @@ while jogando:
         else:
             ch.isJump = False
             ch.jumpCount = 10
-
-#movimentando o inimigo
             
-    if keys[pygame.K_LEFT] and ch1.x1 > ch1.vel1:
-        ch1.x1 -= ch1.vel1
-        ch1.esq1 = True
-        ch1.dire1 = False
-        ch1.standing = False
-        
-    elif keys[pygame.K_RIGHT] and ch1.x1 < 500 - ch1.width1 - ch1.vel1:
-        ch1.x1 += ch1.vel1
-        ch1.dire1 = True
-        ch1.esq1 = False
-        ch1.standing = False
-        
-    else:
-        ch1.standing = True
-        ch1.andarCont1 = 0
+
             
             
     redrawGameWindow()     
