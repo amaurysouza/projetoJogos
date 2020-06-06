@@ -8,17 +8,18 @@ pygame.init()
 screen = pygame.display.set_mode((900, 500))
 pygame.display.set_caption("Snack Time")
 
-#Upload das imagens/Fundo/Personagem
+#Upload das imagens/Fundo/Personagem/
 andarDir = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
 andarEsq = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
 char = pygame.image.load('standing.png')
-
-#inimigo"
 andarDir1 = [pygame.image.load('R1E.png'), pygame.image.load('R2E.png'), pygame.image.load('R3E.png'), pygame.image.load('R4E.png'), pygame.image.load('R5E.png'), pygame.image.load('R6E.png'), pygame.image.load('R7E.png'), pygame.image.load('R8E.png'), pygame.image.load('R9E.png')]
 andarEsq1 = [pygame.image.load('L1E.png'), pygame.image.load('L2E.png'), pygame.image.load('L3E.png'), pygame.image.load('L4E.png'), pygame.image.load('L5E.png'), pygame.image.load('L6E.png'), pygame.image.load('L7E.png'), pygame.image.load('L8E.png'), pygame.image.load('L9E.png')]
-bg = pygame.image.load('bg.jpg')
-pontos = 0
+bg = pygame.image.load('bgTST3.jpg')
 
+#Variáveis de Tempo e Pontuacao
+pontos = 0
+temporizador = 0
+YELLOW = (255, 255, 0)
 clock = pygame.time.Clock()
 
 
@@ -110,7 +111,9 @@ class inimigo(object):
            else:
                self.vel = self.vel * -1
                self.andarCont = 0
-        
+
+
+
                  
 #Classe dos disparos
 class municao(object):
@@ -128,11 +131,13 @@ class municao(object):
         
 
     
-#GameWindow
+#GameWindow elementos que aparecem na tela
 def redrawGameWindow():
     screen.blit(bg, (0, 0))
     texto = font.render('Score: ' + str(pontos),1, (0,0,0))
     screen.blit(texto, (390,10))
+    timer1 = font.render('Tempo: ' + str(temporizador), True, (YELLOW))
+    screen.blit(timer1,(750,10))
     ch.draw(screen)
     npc.draw(screen)
     for tiro in tiros:
@@ -141,15 +146,23 @@ def redrawGameWindow():
 
 
 
-#Loop principal
+
 #Instancia/Personagem/Imigos/Tiros/DirecaoDoTiro
 font = pygame.font.SysFont('comicsans', 30, True)
-ch = personagem(3, 400, 64, 64)
-npc = inimigo(3, 3, 64, 64, 850)
+ch = personagem(3, 430, 64, 64) #posição de inicio do personagem
+npc = inimigo(3, 30, 64, 64, 850) #posição de inicio do inimigo
 tiroLoop = 0
 tiros = []
 facing = 1
 jogando  = True
+
+
+CLOCKTICK = pygame.USEREVENT+1
+pygame.time.set_timer(CLOCKTICK, 1000) #Configurado o time do Pygame para execução a cada 1s
+
+
+
+#-------------------------------------Loop principal----------------------------------------------------------
 while jogando:
     clock.tick(27)
 
@@ -158,11 +171,16 @@ while jogando:
     if tiroLoop > 3:
         tiroLoop = 0
 
-#Fechando a tela do jogo
+    #Fechando a tela do jogo
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             jogando = False
 
+        #capturando evento do cronometro a cada 1s e atualizando a variável contadora
+        if event.type == CLOCKTICK:
+            temporizador = temporizador + 1
+
+    #Disparos do inimigo(NPC)
     for tiro in tiros:
         if tiro.y + tiro.radius < ch.hitbox[1] + ch.hitbox[3] and tiro.y + tiro.radius > ch.hitbox[1]:
             if tiro.x + tiro.radius > ch.hitbox[0] and tiro.x - tiro.radius < ch.hitbox[0] + ch.hitbox[2]:
@@ -174,16 +192,16 @@ while jogando:
             tiro.y += tiro.vel
         else:
             
-            tiros.pop(tiros.index(tiro))
+            tiros.pop(tiros.index(tiro)) 
         
-#Movimentando o Personagem
-    keys = pygame.key.get_pressed()
-
     if jogando and tiroLoop == 0:
         if len(tiros) < 5:
             tiros.append(municao(round(npc.x + npc.width //2), round(npc.y + npc.height//2), 4, (255,0,0), facing))
 
         tiroLoop = 1
+
+    #Movimentando o Personagem
+    keys = pygame.key.get_pressed()
     
     if keys[pygame.K_LEFT] and ch.x > ch.vel:
         ch.x -= ch.vel
