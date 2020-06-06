@@ -16,7 +16,7 @@ char = pygame.image.load('standing.png')
 #inimigo"
 andarDir1 = [pygame.image.load('R1E.png'), pygame.image.load('R2E.png'), pygame.image.load('R3E.png'), pygame.image.load('R4E.png'), pygame.image.load('R5E.png'), pygame.image.load('R6E.png'), pygame.image.load('R7E.png'), pygame.image.load('R8E.png'), pygame.image.load('R9E.png')]
 andarEsq1 = [pygame.image.load('L1E.png'), pygame.image.load('L2E.png'), pygame.image.load('L3E.png'), pygame.image.load('L4E.png'), pygame.image.load('L5E.png'), pygame.image.load('L6E.png'), pygame.image.load('L7E.png'), pygame.image.load('L8E.png'), pygame.image.load('L9E.png')]
-bg = pygame.image.load('bg.jpg')
+bg = pygame.image.load('Menu.jpg')
 pontos = 0
 
 clock = pygame.time.Clock()
@@ -144,7 +144,7 @@ def redrawGameWindow():
 #Loop principal
 #Instancia/Personagem/Imigos/Tiros/DirecaoDoTiro
 font = pygame.font.SysFont('comicsans', 30, True)
-ch = personagem(3, 400, 64, 64)
+ch = personagem(500, 340, 64, 64)
 npc = inimigo(3, 3, 64, 64, 850)
 tiroLoop = 0
 tiros = []
