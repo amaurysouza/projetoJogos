@@ -13,6 +13,7 @@ andarDir = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.ima
 andarEsq = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
 char = pygame.image.load('standing.png')
 
+
 #inimigo
 andarDir1 = [pygame.image.load('R1E.png'), pygame.image.load('R2E.png'), pygame.image.load('R3E.png'), pygame.image.load('R4E.png'), pygame.image.load('R5E.png'), pygame.image.load('R6E.png'), pygame.image.load('R7E.png'), pygame.image.load('R8E.png'), pygame.image.load('R9E.png')]
 andarEsq1 = [pygame.image.load('L1E.png'), pygame.image.load('L2E.png'), pygame.image.load('L3E.png'), pygame.image.load('L4E.png'), pygame.image.load('L5E.png'), pygame.image.load('L6E.png'), pygame.image.load('L7E.png'), pygame.image.load('L8E.png'), pygame.image.load('L9E.png')]
@@ -126,7 +127,18 @@ class municao(object):
     def draw(self,screen):
         pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius)
         
-        
+
+#Obstaculos
+class obstaculo(object):
+    def __init__(self, x, y, width, height, color):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.color = color
+
+    
+      
 
     
 #Janela do Jogo
@@ -134,9 +146,13 @@ def redrawGameWindow():
     screen.blit(bg, (0, 0))
     ch.draw(screen)
     ch1.draw(screen)
+   
     for tiro in tiros:
         tiro.draw(screen)
     pygame.display.update()
+
+
+
 
 
 
@@ -146,11 +162,11 @@ ch = personagem(200, 400, 64, 64)
 ch1 = inimigo(3, 3, 64, 64, 450)
 tiros = []
 facing = 1
-
 #Loop principal
 jogando  = True
 while jogando:
     clock.tick(27)
+    pygame.draw.rect(screen,(255, 0,0), (300, 3, 64, 64)) 
 
 #Fechando a tela do jogo
     for event in pygame.event.get():
@@ -227,6 +243,7 @@ while jogando:
     else:
         ch1.standing = True
         ch1.andarCont1 = 0
+        
             
             
     redrawGameWindow()     

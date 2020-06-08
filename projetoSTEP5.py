@@ -20,8 +20,8 @@ andarEsq1 = [pygame.image.load('L1E.png'), pygame.image.load('L2E.png'), pygame.
 bg = pygame.image.load('bg1.jpg')
 menu = pygame.image.load('Menu.jpg')
 ranking = pygame.image.load('bgTST3.jpg')
-bg2 = pygame.image.load('bg2.png')
-bg3 = pygame.image.load('bg3.png')
+bg2 = pygame.image.load('bg2.jpg')
+bg3 = pygame.image.load('bg3.jpg')
 
 #Variáveis de Tempo e Pontuacao
 pontos = 0
@@ -190,7 +190,7 @@ def redrawGameWindow():
 
 #Instancia/Personagem/Imigos/Tiros/DirecaoDoTiro
 font = pygame.font.SysFont('comicsans', 30, True)
-ch = personagem(3, 430, 64, 64) #posição de inicio do personagem
+ch = personagem(3, 430, 80, 80) #posição de inicio do personagem
 npc = inimigo(30, 30, 64, 64, 850) #posição de inicio do inimigo
 
 
@@ -202,6 +202,7 @@ tiros = []
 facing = 1
 jogandoOn  = False
 jogandoOn2 = False
+jogandoOn3 = False
 rankingOn = False
 menuOn = True
 fase01 = False
@@ -268,6 +269,10 @@ while rankingOn:
 
 ###Jogando###
 while jogandoOn and fase01:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
     clock.tick(27)
 
     if tiroLoop > 0:
@@ -370,114 +375,230 @@ while jogandoOn and fase01:
     pygame.display.update()   
     pygame.display.flip()
     redrawGameWindow()
-            
+    
+    
      
 ########################################--------- FASE 02 -------############################################
-    while jogandoOn2 and fase02:
-        clock.tick(27)
-
-        if tiroLoop > 0:
-            tiroLoop += 1
-        if tiroLoop > 1:
-            tiroLoop = 0
-
-        #Fechando a tela do jogo
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                jogandoOn = False
-
-            #capturando evento do cronometro a cada 1s e atualizando a variável contadora
-            if event.type == CLOCKTICK:
-                temporizador = temporizador + 1
-
-        #Disparos do inimigo(NPC)
-        for tiro in tiros:
-            if tiro.y + tiro.radius < ch.hitbox[1] + ch.hitbox[3] and tiro.y + tiro.radius > ch.hitbox[1]:
-                if tiro.x + tiro.radius > ch.hitbox[0] and tiro.x - tiro.radius < ch.hitbox[0] + ch.hitbox[2]:
-                    #hitSound.play()
-                    ch.hit()
-                    tiros.pop(tiros.index(tiro))
-                    pontos += 1
-
-            if tiro.y < 500 and tiro.y > 0:
-                tiro.y += tiro.vel
-            else:
-            
-                tiros.pop(tiros.index(tiro)) 
-        
-        if jogandoOn and tiroLoop == 0:
-            if len(tiros) < 5:
-                tiros.append(municao(round(npc.x + npc.width //2), round(npc.y + npc.height//2), 4, (255,0,0), facing))
-                #bulletSound.play()
-            tiroLoop = 1
-        
-        #Buffs espalhados pelo mapa
-        if buffLoop >0:
-            buffLoop += 1
-        if buffLoop >1:
-            buffLoop = 0
-        
-        for buff in buffs:  
-            if buff.y + buff.radius < ch.hitbox[1] + ch.hitbox[3] and buff.y + buff.radius > ch.hitbox[1]:
-                if buff.x + buff.radius > ch.hitbox[0] and buff.x - buff.radius < ch.hitbox[0] + ch.hitbox[2]:
-                    print('Ta bufado lek')
-                    ch.buff()
-            else:
-                buffs.pop(buffs.index(buff))
-        if jogandoOn and buffLoop == 0:
-            if len(buffs) < 5:
-                buffs.append(powerUp(round(xBuff), round(yBuff), 6, (0,255,0), facing))
-            buffLoop = 1
-
-        #Movimentando o Personagem
-        keys = pygame.key.get_pressed()
+while jogandoOn2 and fase02:
     
-        if keys[pygame.K_LEFT] and ch.x > ch.vel:
-            ch.x -= ch.vel
-            ch.esq = True
-            ch.dire = False
-        
-        elif keys[pygame.K_RIGHT] and ch.x < 900 - ch.width - ch.vel:
-            ch.x += ch.vel
-            ch.dire = True
-            ch.esq = False
-            
+    clock.tick(27)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+    
+
+    if tiroLoop > 0:
+        tiroLoop += 1
+    if tiroLoop > 1:
+        tiroLoop = 0
+
+    #Fechando a tela do jogo
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            jogandoOn = False
+
+        #capturando evento do cronometro a cada 1s e atualizando a variável contadora
+        if event.type == CLOCKTICK:
+            temporizador = temporizador + 1
+
+    #Disparos do inimigo(NPC)
+    for tiro in tiros:
+        if tiro.y + tiro.radius < ch.hitbox[1] + ch.hitbox[3] and tiro.y + tiro.radius > ch.hitbox[1]:
+            if tiro.x + tiro.radius > ch.hitbox[0] and tiro.x - tiro.radius < ch.hitbox[0] + ch.hitbox[2]:
+                #hitSound.play()
+                ch.hit()
+                tiros.pop(tiros.index(tiro))
+                pontos += 1
+
+        if tiro.y < 500 and tiro.y > 0:
+            tiro.y += tiro.vel
         else:
-            ch.dire = False
+            
+            tiros.pop(tiros.index(tiro)) 
+        
+    if jogandoOn and tiroLoop == 0:
+        if len(tiros) < 5:
+            tiros.append(municao(round(npc.x + npc.width //2), round(npc.y + npc.height//2), 4, (255,0,0), facing))
+            #bulletSound.play()
+        tiroLoop = 1
+        
+    #Buffs espalhados pelo mapa
+    if buffLoop >0:
+        buffLoop += 1
+    if buffLoop >1:
+        buffLoop = 0
+        
+    for buff in buffs:  
+        if buff.y + buff.radius < ch.hitbox[1] + ch.hitbox[3] and buff.y + buff.radius > ch.hitbox[1]:
+            if buff.x + buff.radius > ch.hitbox[0] and buff.x - buff.radius < ch.hitbox[0] + ch.hitbox[2]:
+                print('Ta bufado lek')
+                ch.buff()
+        else:
+            buffs.pop(buffs.index(buff))
+    if jogandoOn and buffLoop == 0:
+        if len(buffs) < 5:
+            buffs.append(powerUp(round(xBuff), round(yBuff), 6, (0,255,0), facing))
+        buffLoop = 1
+
+    #Movimentando o Personagem
+    keys = pygame.key.get_pressed()
+    
+    if keys[pygame.K_LEFT] and ch.x > ch.vel:
+        ch.x -= ch.vel
+        ch.esq = True
+        ch.dire = False
+        
+    elif keys[pygame.K_RIGHT] and ch.x < 900 - ch.width - ch.vel:
+        ch.x += ch.vel
+        ch.dire = True
+        ch.esq = False
+        
+    else:
+        ch.dire = False
+        ch.esq = False
+        ch.andarCont = 0
+        
+    if not(ch.isJump):    
+        if keys[pygame.K_UP]:
+            ch.isJump = True
             ch.esq = False
+            ch.dire = False
             ch.andarCont = 0
             
-        if not(ch.isJump):    
-            if keys[pygame.K_UP]:
-                ch.isJump = True
-                ch.esq = False
-                ch.dire = False
-                ch.andarCont = 0
-                
+    else:
+        if ch.jumpCount >= - 10:
+            neg = 1
+            if ch.jumpCount < 0:
+                neg = -1
+            ch.y -= (ch.jumpCount ** 2) * 0.5 * neg
+            ch.jumpCount -= 1
+            
         else:
-            if ch.jumpCount >= - 10:
-                neg = 1
-                if ch.jumpCount < 0:
-                    neg = -1
-                ch.y -= (ch.jumpCount ** 2) * 0.5 * neg
-                ch.jumpCount -= 1
-            
-            else:
-                ch.isJump = False
-                ch.jumpCount = 10
-        if ch.x > 800 and ch.x < 900 and ch.y > 400 and ch.y < 500:
-            print ('terceira fase')
-            fase01 = False
-            fase02 = True
-        
-        #Atualizando a tela para inicio do jogo
-        screen.blit(bg3, (0,0))
-        pygame.display.update()   
-        pygame.display.flip()
-        redrawGameWindow()
+            ch.isJump = False
+            ch.jumpCount = 10
+    if ch.x >= 800 and ch.x <= 900 and ch.y >= 400 and ch.y <= 500:
+        print ('terceira fase')
+        fase02 = False
+        jogandoOn2 = False
+        jogandoOn3 = True
+        fase03 = True
+    #Atualizando a tela para inicio do jogo
+    screen.blit(bg2, (0,0))
+    pygame.display.update()   
+    pygame.display.flip()
+    redrawGameWindow()        
+
+########################################--------- FASE 03 -------############################################
+while jogandoOn3 and fase03:
     
+    clock.tick(27)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+    
+
+    if tiroLoop > 0:
+        tiroLoop += 1
+    if tiroLoop > 1:
+        tiroLoop = 0
+
+    #Fechando a tela do jogo
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            jogandoOn = False
+
+        #capturando evento do cronometro a cada 1s e atualizando a variável contadora
+        if event.type == CLOCKTICK:
+            temporizador = temporizador + 1
+
+    #Disparos do inimigo(NPC)
+    for tiro in tiros:
+        if tiro.y + tiro.radius < ch.hitbox[1] + ch.hitbox[3] and tiro.y + tiro.radius > ch.hitbox[1]:
+            if tiro.x + tiro.radius > ch.hitbox[0] and tiro.x - tiro.radius < ch.hitbox[0] + ch.hitbox[2]:
+                #hitSound.play()
+                ch.hit()
+                tiros.pop(tiros.index(tiro))
+                pontos += 1
+
+        if tiro.y < 500 and tiro.y > 0:
+            tiro.y += tiro.vel
+        else:
             
+            tiros.pop(tiros.index(tiro)) 
+        
+    if jogandoOn and tiroLoop == 0:
+        if len(tiros) < 5:
+            tiros.append(municao(round(npc.x + npc.width //2), round(npc.y + npc.height//2), 4, (255,0,0), facing))
+            #bulletSound.play()
+        tiroLoop = 1
+        
+    #Buffs espalhados pelo mapa
+    if buffLoop >0:
+        buffLoop += 1
+    if buffLoop >1:
+        buffLoop = 0
+        
+    for buff in buffs:  
+        if buff.y + buff.radius < ch.hitbox[1] + ch.hitbox[3] and buff.y + buff.radius > ch.hitbox[1]:
+            if buff.x + buff.radius > ch.hitbox[0] and buff.x - buff.radius < ch.hitbox[0] + ch.hitbox[2]:
+                print('Ta bufado lek')
+                ch.buff()
+        else:
+            buffs.pop(buffs.index(buff))
+    if jogandoOn and buffLoop == 0:
+        if len(buffs) < 5:
+            buffs.append(powerUp(round(xBuff), round(yBuff), 6, (0,255,0), facing))
+        buffLoop = 1
+
+    #Movimentando o Personagem
+    keys = pygame.key.get_pressed()
+    
+    if keys[pygame.K_LEFT] and ch.x > ch.vel:
+        ch.x -= ch.vel
+        ch.esq = True
+        ch.dire = False
+        
+    elif keys[pygame.K_RIGHT] and ch.x < 900 - ch.width - ch.vel:
+        ch.x += ch.vel
+        ch.dire = True
+        ch.esq = False
+        
+    else:
+        ch.dire = False
+        ch.esq = False
+        ch.andarCont = 0
+        
+    if not(ch.isJump):    
+        if keys[pygame.K_UP]:
+            ch.isJump = True
+            ch.esq = False
+            ch.dire = False
+            ch.andarCont = 0
             
+    else:
+        if ch.jumpCount >= - 10:
+            neg = 1
+            if ch.jumpCount < 0:
+                neg = -1
+            ch.y -= (ch.jumpCount ** 2) * 0.5 * neg
+            ch.jumpCount -= 1
+            
+        else:
+            ch.isJump = False
+            ch.jumpCount = 10
+    if ch.x > 800 and ch.x < 900 and ch.y > 400 and ch.y < 500:
+        print ('segunda fase')
+        fase01 = False
+        jogandoOn = False
+        jogandoOn2 = True
+        fase02 = True
+    #Atualizando a tela para inicio do jogo
+    screen.blit(bg3, (0,0))
+    pygame.display.update()   
+    pygame.display.flip()
+    redrawGameWindow()  
         
 #Prenchimentos da surface  
     
