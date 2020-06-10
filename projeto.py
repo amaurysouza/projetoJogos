@@ -166,7 +166,7 @@ facing = 1
 jogando  = True
 while jogando:
     clock.tick(27)
-    pygame.draw.rect(screen,(255, 0,0), (300, 3, 64, 64)) 
+    
 
 #Fechando a tela do jogo
     for event in pygame.event.get():

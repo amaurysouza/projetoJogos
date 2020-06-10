@@ -19,7 +19,8 @@ andarDir1 = [pygame.image.load('R1E.png'), pygame.image.load('R2E.png'), pygame.
 andarEsq1 = [pygame.image.load('L1E.png'), pygame.image.load('L2E.png'), pygame.image.load('L3E.png'), pygame.image.load('L4E.png'), pygame.image.load('L5E.png'), pygame.image.load('L6E.png'), pygame.image.load('L7E.png'), pygame.image.load('L8E.png'), pygame.image.load('L9E.png')]
 bg = pygame.image.load('bg1.jpg')
 menu = pygame.image.load('Menu.jpg')
-ranking = pygame.image.load('bgTST3.jpg')
+info = pygame.image.load('Continuar.jpg')
+ranking = pygame.image.load('Ranking.jpg')
 bg2 = pygame.image.load('bg2.jpg')
 bg3 = pygame.image.load('bg3.jpg')
 
@@ -204,6 +205,7 @@ jogandoOn  = False
 jogandoOn2 = False
 jogandoOn3 = False
 rankingOn = False
+continuarOn = False
 menuOn = True
 fase01 = False
 fase02 = False
@@ -231,11 +233,12 @@ while menuOn:
             print(pygame.mouse.get_pos())
             if x > 374 and y > 213 and x < 532 and y < 256:
                 menuOn = False
-                jogandoOn = True
-                fase01 = True
+                continuarOn = True
+                #jogandoOn = True
+                #fase01 = True
                 print('Jogo Iniciado')
             
-            #Ranking Click Event, ao Clicar o jogador visualiza a tela de ranking
+           #Ranking Click Event, ao Clicar o jogador visualiza a tela de ranking
             elif x > 374 and y > 288 and x < 532 and y < 328:
                 menuOn = False
                 rankingOn = True
@@ -252,6 +255,29 @@ while menuOn:
         pygame.display.update()   
         pygame.display.flip()
 
+
+#Tela de informações
+while continuarOn:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        #Informações Click Event
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            x = pygame.mouse.get_pos()[0]
+            y = pygame.mouse.get_pos()[1]
+            print(pygame.mouse.get_pos())
+            if x > 383 and y > 400 and x < 522 and y < 500:
+                jogandoOn = True
+                continuarOn = False
+                fase01 = True
+            
+
+        #Atualizando a tela para inicio do jogo
+        screen.blit(info, (5, 5))       
+        pygame.display.update()   
+        pygame.display.flip()
 
 
 ###Ranking####
