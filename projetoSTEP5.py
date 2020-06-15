@@ -12,11 +12,18 @@ surface = screen.subsurface((0,0),(900,500))
 pygame.display.set_caption("Snack Time")
 
 #Upload das imagens/Fundo/Personagem/
-andarDir = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
-andarEsq = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
-char = pygame.image.load('standing.png')
+
+
+char = pygame.image.load('gael h.png')
+andarDir = [pygame.image.load('gael h.png')]
+andarEsq = [pygame.image.load('gael esq.png')]
 andarDir1 = [pygame.image.load('TDP W.png')]
-andarEsq1 = [pygame.image.load('L1E.png'), pygame.image.load('L2E.png'), pygame.image.load('L3E.png'), pygame.image.load('L4E.png'), pygame.image.load('L5E.png'), pygame.image.load('L6E.png'), pygame.image.load('L7E.png'), pygame.image.load('L8E.png'), pygame.image.load('L9E.png')]
+andarEsq1 = [pygame.image.load('TDP H.png')]
+andarDir2 = [pygame.image.load('Amy W.png')]
+andarEsq2 = [pygame.image.load('Amy H.png')]
+pizza = [pygame.image.load('3.png')]
+brocolis = [pygame.image.load('6.png')]
+
 bg = pygame.image.load('bg1.jpg')
 menu = pygame.image.load('Menu.jpg')
 info = pygame.image.load('Continuar.jpg')
@@ -61,11 +68,11 @@ class personagem(object):
 
         if self.esq:
             screen.blit(andarEsq[self.andarCont//3], (self.x, self.y))
-            self.andarCont += 1
+            
 
         elif self.dire:
             screen.blit(andarDir[self.andarCont//3], (self.x, self.y))
-            self.andarCont += 1
+            
 
         else:
             screen.blit(char, (self.x, self.y))
@@ -154,7 +161,8 @@ class municao(object):
         self.vel = 20 * facing
 
     def draw(self,screen):
-        pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius)
+        
+        screen.blit(pizza[0], (self.x, self.y))
         
 
 #Classe dos powerups
@@ -166,7 +174,7 @@ class powerUp(object):
         self.color = color
 
     def draw(self, screen):
-        pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius)
+        screen.blit(brocolis[0], (self.x, self.y))
 
     
 #GameWindow elementos que aparecem na tela
