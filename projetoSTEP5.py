@@ -83,22 +83,21 @@ class personagem(object):
 
 #Hit
     def hit(self):
-        print('hit')
+      #  print('hit')
         if self.vel > 1:
-            print('velocidade reduzida')
+       #     print('velocidade reduzida')
             self.vel -= 1
            
         else:
-            print('velocidade minima atingida')
+        #    print('velocidade minima atingida')
             self.vel = 1
 
 #Bufado
     def buff(self):
-        print('buffinho')
+       # print('buffinho')
         if self.vel >= 1 and self. vel < 8:
             self.vel += 1
-        else:
-            print('velocidae máxima atingida')
+
             
             
         
@@ -176,7 +175,14 @@ class powerUp(object):
     def draw(self, screen):
         screen.blit(brocolis[0], (self.x, self.y))
 
-    
+
+#Classe das plataformas
+
+
+
+
+
+        
 #GameWindow elementos que aparecem na tela
 def redrawGameWindow():
     #screen.blit(bg, (0, 0))
@@ -238,19 +244,19 @@ while menuOn:
         if event.type == pygame.MOUSEBUTTONDOWN:
             x = pygame.mouse.get_pos()[0]
             y = pygame.mouse.get_pos()[1]
-            print(pygame.mouse.get_pos())
+           # print(pygame.mouse.get_pos())
             if x > 374 and y > 213 and x < 532 and y < 256:
                 menuOn = False
                 continuarOn = True
                 #jogandoOn = True
                 #fase01 = True
-                print('Jogo Iniciado')
+               # print('Jogo Iniciado')
             
            #Ranking Click Event, ao Clicar o jogador visualiza a tela de ranking
             elif x > 374 and y > 288 and x < 532 and y < 328:
                 menuOn = False
                 rankingOn = True
-                print('Tela de Ranking')
+               # print('Tela de Ranking')
 
             #Sair Click Event, fecha o jogo
             elif x > 374 and y > 360 and x < 532 and y < 400:
@@ -275,7 +281,7 @@ while continuarOn:
         if event.type == pygame.MOUSEBUTTONDOWN:
             x = pygame.mouse.get_pos()[0]
             y = pygame.mouse.get_pos()[1]
-            print(pygame.mouse.get_pos())
+         #   print(pygame.mouse.get_pos())
             if x > 383 and y > 400 and x < 522 and y < 500:
                 jogandoOn = True
                 continuarOn = False
@@ -353,7 +359,7 @@ while jogandoOn and fase01:
     for buff in buffs:  
         if buff.y + buff.radius < ch.hitbox[1] + ch.hitbox[3] and buff.y + buff.radius > ch.hitbox[1]:
             if buff.x + buff.radius > ch.hitbox[0] and buff.x - buff.radius < ch.hitbox[0] + ch.hitbox[2]:
-                print('bufado')
+           #     print('bufado')
                 ch.buff()
         else:
             buffs.pop(buffs.index(buff))
@@ -399,7 +405,7 @@ while jogandoOn and fase01:
             ch.isJump = False
             ch.jumpCount = 10
     if ch.x > 800 and ch.x < 900 and ch.y > 400 and ch.y < 500:
-        print ('segunda fase')
+       # print ('segunda fase')
         fase01 = False
         jogandoOn = False
         jogandoOn2 = True
@@ -466,7 +472,7 @@ while jogandoOn2 and fase02:
     for buff in buffs:  
         if buff.y + buff.radius < ch.hitbox[1] + ch.hitbox[3] and buff.y + buff.radius > ch.hitbox[1]:
             if buff.x + buff.radius > ch.hitbox[0] and buff.x - buff.radius < ch.hitbox[0] + ch.hitbox[2]:
-                print('Ta bufado lek')
+               # print('Ta bufado lek')
                 ch.buff()
         else:
             buffs.pop(buffs.index(buff))
@@ -512,7 +518,7 @@ while jogandoOn2 and fase02:
             ch.isJump = False
             ch.jumpCount = 10
     if ch.x >= 800 and ch.x <= 900 and ch.y >= 400 and ch.y <= 500:
-        print ('terceira fase')
+       # print ('terceira fase')
         fase02 = False
         jogandoOn2 = False
         jogandoOn3 = True
@@ -577,7 +583,7 @@ while jogandoOn3 and fase03:
     for buff in buffs:  
         if buff.y + buff.radius < ch.hitbox[1] + ch.hitbox[3] and buff.y + buff.radius > ch.hitbox[1]:
             if buff.x + buff.radius > ch.hitbox[0] and buff.x - buff.radius < ch.hitbox[0] + ch.hitbox[2]:
-                print('Ta bufado lek')
+                #print('Ta bufado lek')
                 ch.buff()
         else:
             buffs.pop(buffs.index(buff))
@@ -623,7 +629,7 @@ while jogandoOn3 and fase03:
             ch.isJump = False
             ch.jumpCount = 10
     if ch.x > 800 and ch.x < 900 and ch.y > 400 and ch.y < 500:
-        print ('segunda fase')
+        #('segunda fase')
         fase01 = False
         jogandoOn = False
         jogandoOn2 = True
