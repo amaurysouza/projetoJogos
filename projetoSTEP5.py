@@ -353,7 +353,7 @@ while jogandoOn and fase01:
     for buff in buffs:  
         if buff.y + buff.radius < ch.hitbox[1] + ch.hitbox[3] and buff.y + buff.radius > ch.hitbox[1]:
             if buff.x + buff.radius > ch.hitbox[0] and buff.x - buff.radius < ch.hitbox[0] + ch.hitbox[2]:
-                print('Ta bufado lek')
+                print('bufado')
                 ch.buff()
         else:
             buffs.pop(buffs.index(buff))
